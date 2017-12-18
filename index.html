@@ -1,38 +1,161 @@
 <!DOCTYPE html>
-<html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width">
-    <title>daniel li | home</title>
-    <link href="https://fonts.googleapis.com/css?family=Special+Elite" rel="stylesheet">
-    <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/grid.css">
-    <link rel="stylesheet" href="css/style.css">
-    <script src="js/modernizr-2.6.2.min.js"></script>
-</head>
+<meta charset="utf-8">
+<title>DANIEL LI</title>
+<style type="text/css">
+	body {
+		margin: 0 auto;
+		padding: 0;
+	}
+</style>
 
 <body>
-    <header class="container clearfix content">
-        <div class="grid_12">
-            <h1 id="name">daniel li</h1>
-            <h2 id="sub">graphic design and visual arts</h2>
-        </div>
-    </header>
-    <main class="container clearfix content">
-        <figure class="grid_12">
-            <a href="portfolio/index.html">
-                <img class="top" src="img/homebgtop.png" alt="oops click here for portfolio">
-            </a>
-            <a href="about/index.html">
-                <img class="btm" src="img/homebgbtm.png" alt="oops click here for me">
-            </a>
-        </figure>
-    </main>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-    <script src="js/scripts.js"></script>
-</body>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script>
+    var w = innerWidth,
+        h = innerHeight;
 
-</html>
+    var root,
+        nodes,
+        nodeInfo;
+
+    d3.json("js/feather.json", function(json) {
+        nodeInfo = json;
+        nodes = flatten(nodeInfo);
+        root = nodes[50];
+        console.log(nodeInfo);
+        console.log(nodes);
+        console.log(root);
+
+        applyForce();
+    });
+    // color = d3.scale.category10();
+    function applyForce() {
+        var svg = d3.select('body').append('svg')
+            .attr('width', w)
+            .attr('height', h);
+        var link = svg
+            .on('click', function (d) {
+                location.href="portfolio/index.html"
+            });
+        var bg = svg.append("image")
+        	.attr("xlink:href", "assets/spinefeathers.jpg")
+        	.attr("x", function(d) {
+        		var xpos = Math.round((innerWidth-2171)/2);
+        		return xpos;
+        	})
+        	.attr("y", function(d) {
+        		var ypos = Math.round((innerHeight-1648)/2);
+        		return ypos;
+        	});
+
+        var node = svg.selectAll('g.node')
+            .data(nodes.slice(0,30));
+        var nodeEnter = node.enter().append("svg:g")
+            .attr("class", "node")
+            .attr("height", function(d) { return d.height; })
+            .attr("width", function(d) { return d.width; })
+            .attr("transform", function(d) { return 'translate(' + (-d.width / 2) + ',' + (-d.height / 2) + ')'; });
+        var images = nodeEnter.append("svg:image")
+            .attr("xlink:href", function(d) { return d.img; })
+            .attr("height", function(d) { return d.height; })
+            .attr("width", function(d) { return d.width; });
+
+        svg.on('mousemove', function() {
+            var p1 = d3.mouse(this);
+
+            root.px = p1[0];
+            root.py = p1[1];
+            force.resume();
+        });
+
+        // mouse node, position off screen initially
+        root.x = 2000;
+        root.y = 2000;
+        root.width = 0;
+        root.height = 0;
+        root.fixed = true;
+
+        var force = d3.layout.force()
+            .gravity(0.02)
+            .charge(function(d, i) { return i ? -400: -1500; })
+            .nodes(nodes)
+            .size([w, h]);
+
+        force.on('tick', function(e) {
+            var q = d3.geom.quadtree(nodes),
+                i = 0,
+                n = nodes.length;
+
+            while (++i < n) {
+                q.visit(collide(nodes[i]));
+            }
+
+            node.attr("transform", nodeTransform);
+                // .attr('x', function(d) { return d.x; })
+                // .attr('y', function(d) { return d.y; });
+        });
+
+        force.start();
+    };
+
+    function nodeTransform(d) {
+        return "translate(" + d.x + "," + d.y + ")";
+    }
+
+    function collide(node) {
+        return function(quad, x1, y1, x2, y2) {
+            var updated = false;
+            if (quad.point && (quad.point !== node)) {
+
+                var x = node.x - quad.point.x,
+                    y = node.y - quad.point.y,
+                    xSpacing = (quad.point.width + node.width) / 2,
+                    ySpacing = (quad.point.height + node.height) / 2,
+                    absX = Math.abs(x),
+                    absY = Math.abs(y),
+                    l,
+                    lx,
+                    ly;
+
+                if (absX < xSpacing && absY < ySpacing) {
+                    l = Math.sqrt(x * x + y * y);
+
+                    lx = (absX - xSpacing) / l;
+                    ly = (absY - ySpacing) / l;
+
+                    // the one that's barely within the bounds probably triggered the collision
+                    if (Math.abs(lx) > Math.abs(ly)) {
+                        lx = 0;
+                    } else {
+                        ly = 0;
+                    }
+
+                    node.x -= x *= lx;
+                    node.y -= y *= ly;
+                    quad.point.x += x;
+                    quad.point.y += y;
+
+                    updated = true;
+                }
+            }
+            return updated;
+        };
+    }
+
+    function flatten(root) {
+        var nodes = [];
+        var i = 0;
+
+        function recurse(node) {
+            if (node.children)
+                node.children.forEach(recurse);
+            if (!node.id)
+                node.id = ++i;
+            nodes.push(node);
+        }
+
+        recurse(root);
+        return nodes;
+    }
+    </script>
