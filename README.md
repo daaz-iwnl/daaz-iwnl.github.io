@@ -4,10 +4,13 @@ LIVE SITE: https://daaz-iwnl.github.io/index.html ****D3.v3.min.js is not HTTPS 
 
 ======== PT 1: HOMEPAGE ========
 
-The new site is a rebuild of the midterm portfolio site, though instead of using Bootstrap, it is a creative-JS redesign. The homepage has gone through the most drastic changes, as it is almost completely JS-based. It is functional but not without issues. The bulk of the page calls upon the D3.js data visualization library, and especially the use of D3.force and D3.nodes.
+The new site is a rebuild of the midterm portfolio site, though instead of using Bootstrap, it is a creative-JS redesign. Because a large part of my work is drawings/illustrations, I wanted a site that would reflect that. This site is meant to be weird, unique, inner-machinations-of-the-mind kind of site unlike other sites. The theme is "hand drawn" images and whimsy. 
+
+In comparison to the midterm, the new homepage has gone through the most drastic changes, as it is almost completely JS-based. It is functional but not without issues. The bulk of the HOMEPAGE calls upon the D3.js data visualization library, and especially the use of D3.force and D3.nodes.
+
 The nodes contain data from an external JSON file that includes images of drawings I made and their respective native dimensions. These nodes--with drawings of "feathers, ribs, spines, leaves, whatever"--repel from the mouse due to the D3.force and otherwise float around the canvas. Clicking anywhere on the page moves to the PORTFOLIO page.
 
-======== PT 1: PORTFOLIO ========
+======== PT 2: PORTFOLIO ========
 
 Aside from eliminating the ABOUT page and incorporating it into the HOMEPAGE, the PORTFOLIO page actually remains similar. It simply has undergone a visual redesign with the appropriate color scheme of the new site--black, white, and #e91919 version of red. However, the portfolio page has a fixed button that downloads the resume. Because this page incorporates the same elements as some of the things on the resume, it has been moved to the portfolio page as a text alternative to a webpage.
 
@@ -23,5 +26,5 @@ Looking back, it may have been easier to program images with GSAP/JS animations 
 
 ======== PT 4: NEXT STEPS ========
 
-From this, I've experimented and learned a lot about the D3.js library, SVG drawings through JS, and using JSONs. If I had more time and resources, I would want to smooth out the movement of the D3 nodes, and find a better way to organize the images into elements while having good collision behavior. Furthermore, I would want to incorporate the portfolio page INTO the nodes or into the feathers in some way.
+From this, I've experimented and learned a lot about the D3.js library, SVG drawings through JS, and using JSONs. If I had more time and resources, I would want to smooth out the movement of the D3 nodes, and find a better way to organize the images into elements while having good collision behavior. Furthermore, I would want to incorporate the portfolio page INTO the nodes or into the feathers in some way to make it weirder and more unique.
  
