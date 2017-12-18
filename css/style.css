@@ -6,16 +6,28 @@ Copyright 2013, Josh Cope
 /* =============================================================================
    Site Styles
    ========================================================================== */
+@font-face {
+    font-family: 'Chalkduster';
+    src:url('Chalkduster.ttf.svg#Chalkduster') format('svg'),
+        url('Chalkduster.ttf.eot'),
+        url('Chalkduster.ttf.eot?#iefix') format('embedded-opentype'); 
+    font-weight: normal;
+    font-style: normal;
+}
 
 html {
-    background: #020202;
+    background: white;
 }
 
 body {
    margin: 0;
    padding: 0;
-   color: #766;
-   font-family: 'Special Elite', sans-serif;
+   color: rgb(155, 155, 155);
+   font-family: 'Chalkduster', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+   color: black;
 }
 
 header {
@@ -24,7 +36,7 @@ header {
 
 a {
    text-decoration: none;
-   color: #766;
+   color: rgb(155, 155, 155);
 }
 
 .noMarNoPad {
@@ -56,6 +68,10 @@ a {
    height: 72px;
    box-sizing: border-box;
    margin-top: 100px;
+}
+
+#name a {
+   color: black;
 }
 
 #sub {
@@ -188,15 +204,15 @@ a:active, a:focus {
 
 /* set up transitions for hover*/
 .view .mask {
-   background: -webkit-linear-gradient(rgba(189, 55, 25, 0.2), rgba(3, 89, 83, 1));
-   background: -o-linear-gradient(rgba(189, 55, 25, 0.2), rgba(3, 89, 83, 1));
-   background: linear-gradient(rgba(189, 55, 25, 0.2), rgba(3, 89, 83, 1));
+   background: -webkit-linear-gradient(rgba(233, 25, 25, 0.8), rgba(0, 0, 0, 0.8));
+   background: -o-linear-gradient(rgba(233, 25, 25, 0.8), rgba(0, 0, 0, 0.8));
+   background: linear-gradient(rgba(233, 25, 25, 0.8), rgba(0, 0, 0, 0.8));
    transition: all 0.2s linear;
    opacity: 0;
 }
 
 .view h3 {
-    color: white;
+    color: black;
     background-color: transparent;
     transition: all 0.2s linear;
     opacity: 0;
